@@ -1,0 +1,31 @@
+<template>
+  <div id="app">
+    <vue-progress-bar></vue-progress-bar>
+
+    <navbar></navbar>
+
+    <keep-alive include="account">
+      <router-view></router-view>
+    </keep-alive>
+
+    <div class="sticky-footer-spacing"></div>
+    <footer-main></footer-main>
+  </div>
+</template>
+
+<script>
+import Navbar from "@/components/Partials/Navbar";
+import FooterMain from "@/components/Partials/FooterMain";
+
+export default {
+  name: "app",
+  components: {
+    Navbar,
+    FooterMain
+  }
+};
+</script>
+
+<style>
+@import "https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css";
+</style>
