@@ -51,7 +51,7 @@ export default {
         sort: "",
         order: "desc",
         page: 0,
-        limit: 20
+        limit: 5
       }
     };
   },
