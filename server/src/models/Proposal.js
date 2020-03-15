@@ -1,5 +1,4 @@
 import db from '../db/db'
-import rand from 'randexp'
 
 class Proposal {
     constructor(data) {
@@ -14,16 +13,13 @@ class Proposal {
 
     async all(request) {
         try {
-            return await db('Proposals')
+            return await db('proposals')
                 .select('*')
                 .where(
                     'title',
                     'like',
                     '%' + (request.sort ? request.sort : '') + '%'
                 )
-                .orderBy('createdAt', request.order)
-                .offset(+request.page * +request.limit)
-                .limit(+request.limit)
         } catch (error) {
             console.log(error)
             throw new Error('ERROR')
@@ -43,7 +39,7 @@ class Proposal {
 
     async store() {
         try {
-            return await db('Proposals').insert(this)
+            return await db('proposals').insert(this)
         } catch (error) {
             console.log(error)
             throw new Error('ERROR')
@@ -52,7 +48,7 @@ class Proposal {
 
     async save(request) {
         try {
-            return await db('Proposals')
+            return await db('proposals')
                 .update(this)
                 .where({ id: this.id })
         } catch (error) {
@@ -63,7 +59,7 @@ class Proposal {
 
     async destroy(request) {
         try {
-            return await db('Proposals')
+            return await db('proposals')
                 .delete()
                 .where({ id: this.id })
         } catch (error) {
@@ -75,7 +71,7 @@ class Proposal {
 
 async function findById(id) {
     try {
-        let [ProposalData] = await db('Proposals')
+        let [ProposalData] = await db('proposals')
             .select('id', 'title', 'description')
             .where({ id: id })
         return ProposalData

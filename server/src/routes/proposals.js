@@ -1,6 +1,5 @@
 import Router from 'koa-router'
 import jwt from '../middleware/jwt'
-import logger from '../logs/log'
 
 import ProposalController from '../controllers/proposalController'
 
