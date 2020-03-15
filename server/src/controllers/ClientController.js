@@ -23,6 +23,7 @@ const clientSchema = joi.object({
     status: joi
         .string()
         .required()
+        .valid('NEW', 'IN_PROGRESS', 'DONE'),
 })
 
 

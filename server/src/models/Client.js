@@ -23,6 +23,11 @@ class Client {
                     'like',
                     '%' + (request.sort ? request.sort : '') + '%'
                 )
+                .where(
+                    'status',
+                    '=',
+                    (request.status ? request.status : '') 
+                )
                 .offset(+request.page * +request.limit)
                 .limit(+request.limit)
         } catch (error) {
