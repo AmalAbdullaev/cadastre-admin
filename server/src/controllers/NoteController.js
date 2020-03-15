@@ -27,7 +27,7 @@ class NoteController {
         const note = new Note()
 
         //Let's check that the sort options were set. Sort can be empty
-        if (!query.order || !query.page || !query.limit) {
+        if (!query.page || !query.limit) {
             ctx.throw(400, 'INVALID_ROUTE_OPTIONS')
         }
 

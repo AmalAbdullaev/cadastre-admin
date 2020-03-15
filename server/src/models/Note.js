@@ -24,7 +24,6 @@ class Note {
                     'like',
                     '%' + (request.sort ? request.sort : '') + '%'
                 )
-                .orderBy('createdAt', request.order)
                 .offset(+request.page * +request.limit)
                 .limit(+request.limit)
         } catch (error) {

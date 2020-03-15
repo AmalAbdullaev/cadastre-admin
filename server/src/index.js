@@ -12,6 +12,7 @@ import redis from 'ioredis'
 //Routes
 import userActionsRouter from './routes/userActions'
 import notesRouter from './routes/notes'
+import clientsRouter from './routes/clients'
 
 //Initialize app
 const app = new Koa()
@@ -82,5 +83,7 @@ app.use(userActionsRouter.routes())
 app.use(userActionsRouter.allowedMethods())
 app.use(notesRouter.routes())
 app.use(notesRouter.allowedMethods())
+app.use(clientsRouter.routes())
+app.use(clientsRouter.allowedMethods())
 
 export default app
