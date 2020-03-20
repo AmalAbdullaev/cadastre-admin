@@ -3,9 +3,6 @@ import Router from "vue-router";
 import axios from "axios";
 Vue.use(Router);
 
-// Main Route
-import Home from "@/components/Layouts/Home.vue";
-
 // User Routes
 import Login from "@/components/User/Login.vue";
 import Signup from "@/components/User/Signup.vue";
@@ -30,14 +27,12 @@ const router = new Router({
       name: "notFound",
       meta: { title: "Not Found" }
     },
-    {
-      path: "/",
-      component: Home,
-      name: "home",
-      meta: { title: "Home" }
-    },
 
     // User
+    {
+      path: "/",
+      redirect: { name: "login" }
+    },
     {
       path: "/user/login",
       component: Login,

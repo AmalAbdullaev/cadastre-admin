@@ -7,7 +7,7 @@ import logger from './logs/log'
 import userAgent from 'koa-useragent'
 import error from 'koa-json-error'
 import ratelimit from 'koa-ratelimit'
-import redis from 'ioredis'
+// import redis from 'ioredis'
 
 //Routes
 import userActionsRouter from './routes/userActions'
@@ -17,23 +17,6 @@ import proposalsRouter from './routes/proposals'
 
 //Initialize app
 const app = new Koa()
-
-//Here's the rate limiter
-app.use(
-    ratelimit({
-        db: new redis(),
-        duration: 60000,
-        errorMessage:
-            "Hmm, you seem to be doing that a bit too much - wouldn't you say?",
-        id: ctx => ctx.ip,
-        headers: {
-            remaining: 'Rate-Limit-Remaining',
-            reset: 'Rate-Limit-Reset',
-            total: 'Rate-Limit-Total',
-        },
-        max: 100,
-    })
-)
 
 //Let's log each successful interaction. We'll also log each error - but not here,
 //that's be done in the json error-handling middleware

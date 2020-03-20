@@ -3,17 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <p>
-            <a href="https://github.com/johndatserakis">Koa-Vue-Notes</a> is a
-            SPA using Koa (2.3) as the
-            <a href="https://github.com/johndatserakis/koa-vue-notes-api"
-              >backend</a
-            >
-            and Vue (2.6.10) as the
-            <a href="https://github.com/johndatserakis/koa-vue-notes-api"
-              >frontend</a
-            >.
-          </p>
+          <span>Copyright ©</span>
         </div>
       </div>
     </div>
@@ -44,9 +34,8 @@ export default {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 100px;
   background-color: $light-grey;
-  padding: 30px 0;
+  padding: 20px 0;
   text-align: center;
   color: lighten($black, 25%);
 
