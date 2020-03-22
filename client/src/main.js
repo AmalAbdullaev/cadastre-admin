@@ -17,6 +17,9 @@ import store from "./store";
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
+import Paginate from "vuejs-paginate";
+Vue.component("paginate", Paginate);
+
 import VModal from "vue-js-modal";
 Vue.use(VModal, {
   dynamic: true,

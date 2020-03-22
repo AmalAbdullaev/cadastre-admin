@@ -7,16 +7,21 @@ import { setAuthorizationHeader } from "@/common/utilities";
 
 const SET_CLIENTS = "SET_CLIENTS";
 const SET_CLIENT = "SET_CLIENT";
+const SET_TOTAL = "SET_TOTAL";
 
 const client = {
   namespaced: true,
   state: {
     clients: [],
-    client: {}
+    client: {},
+    total: 0
   },
   mutations: {
     SET_CLIENTS(state, data) {
       state.clients = data;
+    },
+    SET_TOTAL(state, data) {
+      state.total = data;
     },
     SET_CLIENT(state, data) {
       state.client = data;
@@ -34,8 +39,9 @@ const client = {
             }
           })
           .then(response => {
-            console.log(response.data);
+            console.log(response.headers);
             commit(SET_CLIENTS, response.data);
+            commit(SET_TOTAL, parseInt(response.headers.total));
           });
       } catch (error) {
         return Promise.reject(error.response ? error.response : error);

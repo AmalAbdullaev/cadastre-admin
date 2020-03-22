@@ -88,6 +88,22 @@
               </tbody>
             </table>
           </div>
+          <nav>
+            <paginate
+              :page-count="pageCount"
+              :click-handler="getClients"
+              :prev-text="'Предыдущий'"
+              :next-text="'Следующий'"
+              :container-class="'pagination justify-content-center'"
+              :page-class="'page-item'"
+              :page-link-class="'page-link'"
+              :prev-class="'page-item'"
+              :prev-link-class="'page-link'"
+              :next-class="'page-item'"
+              :next-link-class="'page-link'"
+            >
+            </paginate>
+          </nav>
         </div>
       </div>
     </section>
@@ -106,7 +122,7 @@ export default {
         sort: "",
         order: "desc",
         page: 0,
-        limit: 20
+        limit: 5
       },
       newClient: {
         fullName: null,
@@ -119,7 +135,10 @@ export default {
   computed: {
     ...mapState({
       clients: state => state.client.clients
-    })
+    }),
+    pageCount() {
+      return this.$store.state.client.total / this.query.limit;
+    }
   },
   methods: {
     openClientModal(client, title) {
@@ -144,10 +163,15 @@ export default {
       this.$store.dispatch("client/removeClient", { id }).then(() => {
         this.$store.dispatch("client/setClients", this.query);
       });
+    },
+    getClients(pageNum) {
+      this.query.page = parseInt(pageNum - 1);
+      console.log(this.query);
+      this.$store.dispatch("client/setClients", this.query);
     }
   },
   mounted() {
-    this.$store.dispatch("client/setClients", this.query);
+    this.getClients(1);
   }
 };
 </script>

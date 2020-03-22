@@ -54,7 +54,7 @@ app.use(async function responseTime(ctx, next) {
 })
 
 //For cors with options
-app.use(cors({ origin: '*' }))
+app.use(cors({ origin: '*', exposeHeaders : ["Total"] }))
 
 //For useragent detection
 app.use(userAgent)

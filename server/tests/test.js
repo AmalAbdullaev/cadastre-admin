@@ -9,7 +9,15 @@ import { server } from '../app'
 //Set up axios a little bit
 import axios from 'axios'
 const url = `http://localhost:4000`
-const request = axios.create({ baseURL: url })
+const request = axios.create({ 
+    baseURL: url, 
+    timeout: 10000,
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Total': '0'
+    }
+})
 
 //Grab the db variable
 import db from '../src/db/db'

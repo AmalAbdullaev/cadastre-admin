@@ -16,7 +16,7 @@ class Client {
 
     async all(request) {
         try {
-           let query = db('clients')
+           let query = await db('clients')
                 .select('*')
                 .where(
                     'fullName',
@@ -33,12 +33,17 @@ class Client {
                 )
             }
 
-            return query;
+            let total = await db('clients').count({count: '*'})
+            return  {
+                data: query,
+                count: total[0].count
+            };
         } catch (error) {
             console.log(error)
             throw new Error('ERROR')
         }
     }
+
 
     async find(id) {
         try {

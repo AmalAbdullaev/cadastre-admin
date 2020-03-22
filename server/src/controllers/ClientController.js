@@ -43,7 +43,8 @@ class ClientController {
         try {
             let result = await client.all(query)
             console.log(result);
-            ctx.body = result
+            ctx.body = result.data;
+            ctx.set('Total', result.count);
         } catch (error) {
             console.log(error)
             ctx.throw(400, 'INVALID_DATA' + error)
