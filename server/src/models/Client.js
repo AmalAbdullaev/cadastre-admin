@@ -16,20 +16,24 @@ class Client {
 
     async all(request) {
         try {
-            return await db('clients')
+           let query = db('clients')
                 .select('*')
                 .where(
                     'fullName',
                     'like',
                     '%' + (request.sort ? request.sort : '') + '%'
                 )
-                .where(
+                .offset(+request.page * +request.limit)
+                .limit(+request.limit)
+            if(request.status) {
+                query.where(
                     'status',
                     '=',
                     (request.status ? request.status : '') 
                 )
-                .offset(+request.page * +request.limit)
-                .limit(+request.limit)
+            }
+
+            return query;
         } catch (error) {
             console.log(error)
             throw new Error('ERROR')

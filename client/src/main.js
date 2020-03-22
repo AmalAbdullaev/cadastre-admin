@@ -17,6 +17,13 @@ import store from "./store";
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
+import VModal from "vue-js-modal";
+Vue.use(VModal, {
+  dynamic: true,
+  injectModalsContainer: true,
+  dynamicDefaults: { clickToClose: false }
+});
+
 import BootstrapVue from "bootstrap-vue";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.use(BootstrapVue);

@@ -4,12 +4,12 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 import user from "@/store/user";
-import note from "@/store/note";
+import client from "@/store/client";
 
 const store = new Vuex.Store({
   modules: {
     user,
-    note
+    client
   }
 });
 

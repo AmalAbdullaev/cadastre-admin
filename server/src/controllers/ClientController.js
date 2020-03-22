@@ -18,7 +18,7 @@ const clientSchema = joi.object({
     phone: joi
         .string()
         .min(8)
-        .max(35)
+        .max(12)
         .required(),
     status: joi
         .string()
@@ -42,6 +42,7 @@ class ClientController {
         //Get paginated clients of clients
         try {
             let result = await client.all(query)
+            console.log(result);
             ctx.body = result
         } catch (error) {
             console.log(error)

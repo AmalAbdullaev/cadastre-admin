@@ -128,7 +128,7 @@ export default {
         this.credentials.username = "";
         this.credentials.password = "";
         this.$v.$reset();
-        this.$router.push({ name: "account" });
+        this.$router.push({ name: "clients" });
       } catch (error) {
         this.$toasted.error("Hmm, those details don't seem right.");
       } finally {

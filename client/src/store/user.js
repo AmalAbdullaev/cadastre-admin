@@ -36,6 +36,7 @@ async function logoutOfProgram() {
 
 // Axios interceptor that'll take care of expired tokens
 axios.interceptors.response.use(undefined, async error => {
+  console.log(error, "error");
   if (
     error.response.status === 401 &&
     error.response.data.message === "TOKEN_EXPIRED" &&

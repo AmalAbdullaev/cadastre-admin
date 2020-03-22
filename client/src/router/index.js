@@ -9,10 +9,15 @@ import Signup from "@/components/User/Signup.vue";
 import Forgot from "@/components/User/Forgot.vue";
 import Reset from "@/components/User/Reset.vue";
 
+//Clients
+import Clients from "@/components/Layouts/Clients.vue";
+// import ClientModal from "@/components/Modals/ClientModal.vue";
+
+//Proposals
+import Proposals from "@/components/Layouts/Proposals.vue";
+
 // Account
 import Account from "@/components/Layouts/Account.vue";
-import CreateNote from "@/components/Layouts/CreateNote.vue";
-import EditNote from "@/components/Layouts/EditNote.vue";
 
 // Other
 import NotFound from "@/components/Layouts/NotFound.vue";
@@ -63,19 +68,28 @@ const router = new Router({
       path: "/account",
       component: Account,
       name: "account",
-      meta: { title: "Account", requiresAuth: true }
-    },
-    {
-      path: "/createNote",
-      component: CreateNote,
-      name: "createNote",
-      meta: { title: "Create Note", requiresAuth: true }
-    },
-    {
-      path: "/editNote",
-      component: EditNote,
-      name: "editNote",
-      meta: { title: "Edit Note", requiresAuth: true }
+      meta: { title: "Account", requiresAuth: true },
+      children: [
+        //Clients
+        {
+          path: "/account/clients",
+          component: Clients,
+          name: "clients",
+          meta: { title: "Clients", requiresAuth: true }
+        },
+        // {
+        //   path: "/account/clients/edit/:id",
+        //   component: ClientModal,
+        //   name: "clientEdit",
+        //   meta: { title: "Edit", requiresAuth: true }
+        // },
+        {
+          path: "/account/proposals",
+          component: Proposals,
+          name: "proposals",
+          meta: { title: "Proposals", requiresAuth: true }
+        }
+      ]
     }
   ],
   scrollBehavior(to, _, savedPosition) {

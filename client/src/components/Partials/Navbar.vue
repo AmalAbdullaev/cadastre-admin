@@ -49,7 +49,6 @@ export default {
       // As you can see, with Vuex we we need to fire logout methods
       // for each of our modules.
       await this.$store.dispatch("user/userLogout");
-      await this.$store.dispatch("note/userLogout");
       this.$router.push({ name: "home" });
 
       // After logging the user out we need to refresh the page
