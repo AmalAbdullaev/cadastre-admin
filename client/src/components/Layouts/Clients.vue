@@ -18,11 +18,24 @@
               <form name="searchForm" class="search-form">
                 <label class="input-group">
                   <input
+                    v-model="query.sort"
                     placeholder="Поиск"
                     class="form-control col-5"
                     aria-controls="dataTable"
                   />
-                  <button class="btn btn-sm btn-primary">Искать</button>
+                  <button
+                    class="btn btn-sm btn-primary"
+                    v-on:click.prevent="search()"
+                  >
+                    Искать
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    v-on:click="clearSearch()"
+                  >
+                    Очистить
+                  </button>
                 </label>
               </form>
             </div>
@@ -56,9 +69,16 @@
                     Услуга
                   </td>
                   <th>
-                    <span class="badge badge-pill badge-warning">{{
-                      client.status
-                    }}</span>
+                    <a
+                      href="#"
+                      class="btn btn-sm"
+                      :class="{
+                        'btn-warning': client.status === 'NEW',
+                        'btn-danger': client.status === 'IN_PROGRESS',
+                        'btn-success': client.status === 'DONE'
+                      }"
+                      >{{ status[client.status] }}</a
+                    >
                   </th>
                   <td>
                     <div
@@ -68,7 +88,7 @@
                     >
                       <button
                         type="button"
-                        class="btn btn-success"
+                        class="btn btn-success btn-sm"
                         v-on:click="
                           openClientModal(client, 'Редактировать клиента')
                         "
@@ -77,7 +97,7 @@
                       </button>
                       <button
                         type="button"
-                        class="btn btn-danger"
+                        class="btn btn-danger btn-sm"
                         v-on:click="remove(client.id)"
                       >
                         Удалить
@@ -90,6 +110,7 @@
           </div>
           <nav>
             <paginate
+              v-model="page"
               :page-count="pageCount"
               :click-handler="getClients"
               :prev-text="'Предыдущий'"
@@ -129,8 +150,19 @@ export default {
         phone: null,
         email: null,
         status: null
-      }
+      },
+      status: {
+        NEW: "Новый",
+        IN_PROGRESS: "В прогрессе",
+        DONE: "Выполнен"
+      },
+      page: 1
     };
+  },
+  watch: {
+    page: function(currentPage) {
+      this.query.page = currentPage - 1;
+    }
   },
   computed: {
     ...mapState({
@@ -164,14 +196,20 @@ export default {
         this.$store.dispatch("client/setClients", this.query);
       });
     },
-    getClients(pageNum) {
-      this.query.page = parseInt(pageNum - 1);
-      console.log(this.query);
+    getClients() {
+      this.$store.dispatch("client/setClients", this.query);
+    },
+    search() {
+      this.page = 1;
+      this.$store.dispatch("client/setClients", this.query);
+    },
+    clearSearch() {
+      this.query.sort = "";
       this.$store.dispatch("client/setClients", this.query);
     }
   },
   mounted() {
-    this.getClients(1);
+    this.$store.dispatch("client/setClients", this.query);
   }
 };
 </script>

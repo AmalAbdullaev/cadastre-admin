@@ -33,10 +33,7 @@ const client = {
       try {
         return await axios
           .get(api.client.fetchClients(), {
-            params: {
-              page: data.page,
-              limit: data.limit
-            }
+            params: data
           })
           .then(response => {
             console.log(response.headers);

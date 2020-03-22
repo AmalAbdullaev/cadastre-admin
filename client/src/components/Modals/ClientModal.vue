@@ -140,7 +140,7 @@ export default {
               this.errors.push("Ошибка запроса " + err.data.message);
             });
         } else {
-          this.errors.push("Enter correct client");
+          this.errors.push("Введите корректного клиента");
         }
       }
     },

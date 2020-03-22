@@ -77,12 +77,6 @@ const router = new Router({
           name: "clients",
           meta: { title: "Clients", requiresAuth: true }
         },
-        // {
-        //   path: "/account/clients/edit/:id",
-        //   component: ClientModal,
-        //   name: "clientEdit",
-        //   meta: { title: "Edit", requiresAuth: true }
-        // },
         {
           path: "/account/proposals",
           component: Proposals,

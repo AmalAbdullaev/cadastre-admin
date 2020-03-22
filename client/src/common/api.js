@@ -3,5 +3,10 @@ export default {
     fetchClients: () => {
       return "/clients";
     }
+  },
+  proposal: {
+    fetchProposals: () => {
+      return "/proposals";
+    }
   }
 };
