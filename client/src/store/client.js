@@ -44,12 +44,7 @@ const client = {
     async saveClient({ rootGetters }, data) {
       setAuthorizationHeader(rootGetters["user/accessToken"]);
       try {
-        return await axios.post(api.client.fetchClients(), {
-          fullName: data.fullName,
-          phone: data.phone,
-          email: data.email,
-          status: data.status
-        });
+        return await axios.post(api.client.fetchClients(), data.client);
       } catch (error) {
         return Promise.reject(error.response ? error.response : error);
       }

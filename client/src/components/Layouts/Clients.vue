@@ -9,32 +9,25 @@
             <div class="col-md-6">
               <button
                 class="btn btn-sm btn-primary add-btn"
-                v-on:click="addNewClient"
-                :disabled="editTable"
+                v-on:click="openClientModal(newClient, 'Создать клиента')"
               >
                 Добавить клиента
               </button>
-              <div
-                v-if="showAlert"
-                v-for="error in errors"
-                :key="error"
-                class="alert alert-danger"
-                role="alert"
-              >
-                {{ error }}
-              </div>
             </div>
             <div class="col-md-6">
               <form name="searchForm" class="search-form">
                 <label class="input-group">
-                  <input placeholder="Поиск" aria-controls="dataTable" />
+                  <input
+                    placeholder="Поиск"
+                    class="form-control col-5"
+                    aria-controls="dataTable"
+                  />
                   <button class="btn btn-sm btn-primary">Искать</button>
                 </label>
               </form>
             </div>
           </div>
           <div class="row">
-            <!-- {{ clients }} -->
             <table class="table">
               <thead>
                 <tr>
@@ -48,54 +41,6 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-if="editTable">
-                  <th></th>
-                  <td>
-                    <input type="text" v-model="newClient.fullName" required />
-                  </td>
-                  <td>
-                    <input type="text" v-model="newClient.phone" required />
-                  </td>
-                  <td>
-                    <input type="email" v-model="newClient.email" required />
-                  </td>
-                  <td>
-                    <select v-model="newClient.proposal" required>
-                      <option value="volvo">Услуга 1</option>
-                      <option value="saab">Услуга 2</option>
-                      <option value="fiat">Услуга 3</option>
-                    </select>
-                  </td>
-                  <td>
-                    <select v-model="newClient.status" required>
-                      <option value="NEW">Новый</option>
-                      <option value="IN_PROGRESS">В прогрессе</option>
-                      <option value="DONE">Закончен</option>
-                    </select>
-                  </td>
-                  <td>
-                    <div
-                      class="btn-group"
-                      role="group"
-                      aria-label="Basic example"
-                    >
-                      <button
-                        type="button"
-                        class="btn btn-success"
-                        v-on:click="save"
-                      >
-                        Сохранить
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-danger"
-                        v-on:click="close"
-                      >
-                        Закрыть
-                      </button>
-                    </div>
-                  </td>
-                </tr>
                 <tr v-for="client in clients" :key="client.id">
                   <th>{{ client.id }}</th>
                   <td>
@@ -124,7 +69,9 @@
                       <button
                         type="button"
                         class="btn btn-success"
-                        v-on:click="showModal(client)"
+                        v-on:click="
+                          openClientModal(client, 'Редактировать клиента')
+                        "
                       >
                         Редактировать
                       </button>
@@ -155,7 +102,6 @@ export default {
   name: "clients",
   data() {
     return {
-      errors: [],
       query: {
         sort: "",
         order: "desc",
@@ -167,10 +113,7 @@ export default {
         phone: null,
         email: null,
         status: null
-      },
-      editTable: false,
-      showAlert: false,
-      isEditClient: {}
+      }
     };
   },
   computed: {
@@ -179,12 +122,11 @@ export default {
     })
   },
   methods: {
-    showModal(client) {
-      // this.$router.push({ name: "clientEdit", params: { id: client.id } });
+    openClientModal(client, title) {
       this.$modal.show(
         ClientModal,
         {
-          title: "Редактировать клиента",
+          title: title,
           client: Object.assign({}, client)
         },
         {
@@ -198,69 +140,14 @@ export default {
         }
       );
     },
-    addNewClient() {
-      this.editTable = true;
-    },
-    save() {
-      this.errors = [];
-      if (
-        this.newClient.fullName &&
-        this.newClient.phone &&
-        this.newClient.email &&
-        this.validEmail(this.newClient.email) &&
-        this.newClient.status
-      ) {
-        this.$store
-          .dispatch("client/saveClient", this.newClient)
-          .then(() => {
-            this.editTable = false;
-            this.$store.dispatch("client/setClients", this.query);
-            this.newClient = {};
-          })
-          .catch(err => {
-            console.log(err);
-            this.errors.push("Ошибка запроса " + err.data.message);
-          });
-      } else {
-        this.errors.push("Enter correct client");
-      }
-    },
     remove(id) {
       this.$store.dispatch("client/removeClient", { id }).then(() => {
         this.$store.dispatch("client/setClients", this.query);
       });
-    },
-    validEmail: function(email) {
-      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-    },
-    close() {
-      this.editTable = false;
-    },
-    editClient(id) {
-      this.isEditClient[id] = true;
-    }
-  },
-  watch: {
-    errors(newValue) {
-      this.showAlert = true;
-      if (newValue.length) {
-        setTimeout(
-          function() {
-            this.showAlert = false;
-          }.bind(this),
-          3000
-        );
-      }
     }
   },
   mounted() {
-    this.$store.dispatch("client/setClients", {
-      sort: "",
-      order: "desc",
-      page: 0,
-      limit: 20
-    });
+    this.$store.dispatch("client/setClients", this.query);
   }
 };
 </script>
