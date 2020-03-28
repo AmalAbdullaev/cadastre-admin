@@ -19,6 +19,9 @@ import Proposals from "@/components/Layouts/Proposals.vue";
 // Account
 import Account from "@/components/Layouts/Account.vue";
 
+// Landing
+import Landing from "@/components/Layouts/Landing.vue";
+
 // Other
 import NotFound from "@/components/Layouts/NotFound.vue";
 
@@ -61,6 +64,12 @@ const router = new Router({
       component: Reset,
       name: "reset",
       meta: { title: "Reset" }
+    },
+    {
+      path: "/layout/landing",
+      component: Landing,
+      name: "landing",
+      meta: { title: "Landing" }
     },
 
     // Program
