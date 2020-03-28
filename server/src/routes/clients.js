@@ -28,4 +28,8 @@ router.delete('/api/v1/clients/:id', jwtMiddleware, async (ctx, next) => {
     await clientController.delete(ctx)
 })
 
+router.post('/api/v1/clients/form', async (ctx, next) => {
+    await clientController.create(ctx)
+})
+
 export default router

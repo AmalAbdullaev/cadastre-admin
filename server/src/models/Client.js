@@ -1,5 +1,4 @@
 import db from '../db/db'
-import rand from 'randexp'
 
 class Client {
     constructor(data) {
@@ -23,21 +22,28 @@ class Client {
                     'like',
                     '%' + (request.sort ? request.sort : '') + '%'
                 )
-                .offset(+request.page * +request.limit)
-                .limit(+request.limit)
-            if(request.status) {
-                query.where(
-                    'status',
-                    '=',
-                    (request.status ? request.status : '') 
-                )
-            }
+                .innerJoin('clients_proposals', 'clients.id', '=', 'clients_proposals.client_id')
+                .options({nestTables: true})
+                .innerJoin('proposals', 'proposals.id', '=', 'clients_proposals.proposal_id')
+                .options({nestTables: true})
+                .then(res => {
+                    console.log(res);
+                })
+                // .offset(+request.page * +request.limit)
+                // .limit(+request.limit)
+            // if(request.status) {
+            //     query.where(
+            //         'status',
+            //         '=',
+            //         (request.status ? request.status : '') 
+            //     )
+            // }
 
-            let total = await db('clients').count({count: '*'})
-            return  {
-                data: query,
-                count: total[0].count
-            };
+            // let total = await db('clients').count({count: '*'})
+            // return  {
+            //     data: query,
+            //     count: total[0].count
+            // };
         } catch (error) {
             console.log(error)
             throw new Error('ERROR')
@@ -91,8 +97,10 @@ class Client {
 async function findById(id) {
     try {
         let [ClientData] = await db('clients')
-            .select('id', 'fullName', 'email', 'phone', 'status')
-            .where({ id: id })
+            .select('*')
+            .where({ id: id })      
+            .innerJoin('clients_proposals', 'clients.id', '=', 'clients_proposals.client_id')
+            .innerJoin('proposals', 'proposals.id', '=', 'clients_proposals.proposal_id')
         return ClientData
     } catch (error) {
         console.log(error)

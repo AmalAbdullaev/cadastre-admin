@@ -20,6 +20,9 @@ Vue.use(Vuelidate);
 import Paginate from "vuejs-paginate";
 Vue.component("paginate", Paginate);
 
+import Multiselect from "vue-multiselect";
+Vue.component("multiselect", Multiselect);
+
 import VModal from "vue-js-modal";
 Vue.use(VModal, {
   dynamic: true,

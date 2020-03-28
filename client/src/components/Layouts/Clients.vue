@@ -66,7 +66,7 @@
                     {{ client.email }}
                   </td>
                   <td>
-                    Услуга
+                    <!-- <span v-for="proposal in client.proposals"></span> -->
                   </td>
                   <th>
                     <a
@@ -149,7 +149,8 @@ export default {
         fullName: null,
         phone: null,
         email: null,
-        status: null
+        status: "NEW",
+        proposals: []
       },
       status: {
         NEW: "Новый",

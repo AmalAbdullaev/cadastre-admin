@@ -66,15 +66,20 @@
             >Услуги</label
           >
           <div class="col-sm-10">
-            <select v-model="client.proposal" class="form-control" required>
-              <option value="" disabled selected>Выберите услугу</option>
-              <option value="volvo">Услуга 1</option>
-              <option value="saab">Услуга 2</option>
-              <option value="fiat">Услуга 3</option>
-            </select>
+            <multiselect
+              v-model="client.proposals"
+              tag-placeholder="Add this as new tag"
+              placeholder="Search or add a tag"
+              label="title"
+              track-by="title"
+              :options="proposals"
+              :multiple="true"
+              :taggable="true"
+              @tag="addTag"
+            ></multiselect>
           </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" v-if="client.id">
           <label class="col-sm-2 col-form-label">Статус заявки</label>
           <div class="col-sm-10">
             <select v-model="client.status" class="form-control" required>
@@ -104,6 +109,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "client-modal",
   props: ["title", "client"],
@@ -112,6 +118,11 @@ export default {
       errors: [],
       showAlert: false
     };
+  },
+  computed: {
+    ...mapState({
+      proposals: state => state.proposal.proposals
+    })
   },
   methods: {
     save() {
@@ -127,8 +138,7 @@ export default {
           this.client.fullName &&
           this.client.phone &&
           this.client.email &&
-          this.validEmail(this.client.email) &&
-          this.client.status
+          this.validEmail(this.client.email)
         ) {
           this.$store
             .dispatch("client/saveClient", { client: this.client })
@@ -147,6 +157,13 @@ export default {
     validEmail: function(email) {
       var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
+    },
+    addTag(newTag) {
+      const tag = {
+        name: newTag,
+        code: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000)
+      };
+      this.client.status.push(tag);
     }
   },
   watch: {
@@ -161,6 +178,9 @@ export default {
         );
       }
     }
+  },
+  mounted() {
+    this.$store.dispatch("proposal/setProposals");
   }
 };
 </script>

@@ -2,6 +2,7 @@ import joi from 'joi'
 import sgMail from '@sendgrid/mail'
 import dateFormat from 'date-fns/format'
 import { Client } from '../models/Client'
+import { ClientProposal } from '../models/ClientProposal'
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const clientSchema = joi.object({
@@ -23,7 +24,7 @@ const clientSchema = joi.object({
     status: joi
         .string()
         .required()
-        .valid('NEW', 'IN_PROGRESS', 'DONE'),
+        .valid('NEW', 'IN_PROGRESS', 'DONE')
 })
 
 
@@ -73,6 +74,7 @@ class ClientController {
 
         //Attach logged in user
         const client = new Client(request)
+        client.status = 'NEW';
 
         //Validate the newly created client
         const validator = joi.validate(client, clientSchema)
@@ -81,6 +83,8 @@ class ClientController {
         try {
             let result = await client.store()
             ctx.body = { message: 'SUCCESS', id: result[0] }
+            const clientProposal = new ClientProposal({ clientId: result[0], proposals: request.proposals });
+            await clientProposal.save();
         } catch (error) {
             console.log(error)
             ctx.throw(400, 'INVALID_DATA')
@@ -105,12 +109,17 @@ class ClientController {
 
         //Replace the client data with the new updated client data
         Object.keys(ctx.request.body).forEach(function(parameter, index) {
-            client[parameter] = request[parameter]
+            if(client.hasOwnProperty(parameter))
+                client[parameter] = request[parameter]
         })
 
         try {
+            console.log(client);
             await client.save()
-            ctx.body = { message: 'SUCCESS' }
+            ctx.body = { message: 'SUCCESS'}
+            console.log('RESULT', request.proposals);
+            const clientProposal = new ClientProposal({ clientId: params.id, proposals: request.proposals });
+            await clientProposal.save();
         } catch (error) {
             console.log(error)
             ctx.throw(400, 'INVALID_DATA')
