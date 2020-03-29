@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch-client": "cd client && npm install && npm run watch",
-    "watch-server": "cd server && npm install && npm run watch",
+    "watch-client": "cd client && npm run watch",
+    "watch-server": "cd server && npm run watch",
     "watch-docker": "cd server && docker-compose up -d",
-    "start": "concurrently 'npm:watch-*'"
+    "start-dev": "concurrently 'npm:watch-*'"
   },
   "repository": {
     "type": "git",

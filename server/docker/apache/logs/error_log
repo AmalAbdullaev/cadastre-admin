@@ -178,12 +178,13 @@
 [Fri Mar 27 20:17:24.763619 2020] [proxy_fcgi:error] [pid 91:tid 140454318918432] [client 172.23.0.1:36192] AH01071: Got error 'Primary script unknown\n'
 [Sat Mar 28 10:42:39.951936 2020] [mpm_event:notice] [pid 1:tid 140454325132616] AH00492: caught SIGWINCH, shutting down gracefully
 [Sat Mar 28 10:43:09.091373 2020] [mpm_event:notice] [pid 1:tid 139835340328264] AH00489: Apache/2.4.41 (Unix) configured -- resuming normal operations
-[Sat Mar 28 10:43:09.100731 2020] [core:notice] [pid 1:tid 139835340328264] AH00094: Command line: 'httpd -D FOREGROUND'
-=======
-[Thu Mar 26 11:34:36.055669 2020] [mpm_event:notice] [pid 1:tid 139891226393928] AH00489: Apache/2.4.41 (Unix) configured -- resuming normal operations
+[Sat Mar 2[Sun Mar 29 16:54:43.374268 2020] [mpm_event:notice] [pid 1:tid 139835340328264] AH00492: caught SIGWINCH, shutting down gracefully
+ 11:34:36.055669 2020] [mpm_event:notice] [pid 1:tid 139891226393928] AH00489: Apache/2.4.41 (Unix) configured -- resuming normal operations
 [Thu Mar 26 11:34:36.056256 2020] [core:notice] [pid 1:tid 139891226393928] AH00094: Command line: 'httpd -D FOREGROUND'
 [Sat Mar 28 07:09:16.070896 2020] [mpm_event:notice] [pid 1:tid 140483431542088] AH00489: Apache/2.4.41 (Unix) configured -- resuming normal operations
 [Sat Mar 28 07:09:16.073511 2020] [core:notice] [pid 1:tid 140483431542088] AH00094: Command line: 'httpd -D FOREGROUND'
 [Sat Mar 28 07:44:45.109053 2020] [proxy_fcgi:error] [pid 9:tid 140483424897824] [client 172.19.0.1:58876] AH01071: Got error 'Primary script unknown\n'
 [Sat Mar 28 09:44:55.256206 2020] [proxy_fcgi:error] [pid 9:tid 140483428195104] [client 172.19.0.1:58880] AH01071: Got error 'Primary script unknown\n'
 >>>>>>> master
+[Sun Mar 29 17:41:06.302381 2020] [mpm_event:notice] [pid 1:tid 140476603366728] AH00489: Apache/2.4.41 (Unix) configured -- resuming normal operations
+[Sun Mar 29 17:41:06.306413 2020] [core:notice] [pid 1:tid 140476603366728] AH00094: Command line: 'httpd -D FOREGROUND'
