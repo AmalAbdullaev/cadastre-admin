@@ -1,111 +1,81 @@
-import db from '../db/db'
+import { Model } from '../db/db'
+import Proposal from './Proposal'
+import { UniqueViolationError } from 'objection';
 
-class Client {
-    constructor(data) {
-        if (!data) {
-            return
-        }
 
-        this.id = data.id
-        this.fullName = data.fullName
-        this.email = data.email
-        this.phone = data.phone
-        this.status = data.status
+class Client extends Model {
+    static get tableName() {
+        return 'clients';
+      }
+    
+    static get relationMappings() {
+        return {
+            proposals: {
+                relation: Model.ManyToManyRelation,
+                modelClass: Proposal,
+                join: {
+                    from: 'clients.id',
+                    through: {
+                        from: 'clients_proposals.client_id',
+                        to: 'clients_proposals.proposal_id'
+                      },
+                    to: 'proposals.id'
+                }
+            }
+        };
     }
 
-    async all(request) {
-        try {
-           let query = await db('clients')
-                .select('*')
-                .where(
-                    'fullName',
-                    'like',
-                    '%' + (request.sort ? request.sort : '') + '%'
-                )
-                .innerJoin('clients_proposals', 'clients.id', '=', 'clients_proposals.client_id')
-                .options({nestTables: true})
-                .innerJoin('proposals', 'proposals.id', '=', 'clients_proposals.proposal_id')
-                .options({nestTables: true})
-                .then(res => {
-                    console.log(res);
-                })
-                // .offset(+request.page * +request.limit)
-                // .limit(+request.limit)
-            // if(request.status) {
-            //     query.where(
-            //         'status',
-            //         '=',
-            //         (request.status ? request.status : '') 
-            //     )
-            // }
-
-            // let total = await db('clients').count({count: '*'})
-            // return  {
-            //     data: query,
-            //     count: total[0].count
-            // };
-        } catch (error) {
-            console.log(error)
-            throw new Error('ERROR')
-        }
+    static async all(query) {
+        const clients =  await this
+            .query()
+            .withGraphFetched('proposals')
+            .where(
+                'fullName',
+                'like',
+                '%' + (query.sort ? query.sort : '') + '%'
+            )
+            .page(query.page, query.limit)
+        return clients
     }
 
-
-    async find(id) {
-        try {
-            let result = await findById(id)
-            if (!result) return {}
-            this.constructor(result)
-        } catch (error) {
-            console.log(error)
-            throw new Error('ERROR')
+    static async store(client) {
+        const newClient = await this.query().insert(client);
+        for(let proposalId of client.proposals) {
+            try{
+                await this.relatedQuery('proposals').for(newClient.id).relate(proposalId)
+            } catch(err) {
+                if(!(err instanceof UniqueViolationError)){
+                    throw err;
+                }
+            }
         }
+
+        return newClient
     }
 
-    async store() {
-        try {
-            return await db('clients').insert(this)
-        } catch (error) {
-            console.log(error)
-            throw new Error('ERROR')
+    static async update(client) {
+        await this.relatedQuery('proposals').for(client.id).unrelate()
+        for(let proposalId of client.proposals) {
+            try{
+                await this.relatedQuery('proposals').for(client.id).relate(proposalId)
+            } catch(err) {
+                if(!(err instanceof UniqueViolationError)){
+                    throw err;
+                }
+            }
         }
+        return await this.query().patchAndFetchById(client.id, client)
     }
 
-    async save(request) {
-        try {
-            return await db('clients')
-                .update(this)
-                .where({ id: this.id })
-        } catch (error) {
-            console.log(error)
-            throw new Error('ERROR')
-        }
+    static async findOne(id) {
+        const client = await this.query().findById(id)
+        const proposals = await client.$relatedQuery('proposals')
+        client.proposals = proposals;
+        return client;
     }
 
-    async destroy(request) {
-        try {
-            return await db('clients')
-                .delete()
-                .where({ id: this.id })
-        } catch (error) {
-            console.log(error)
-            throw new Error('ERROR')
-        }
+    static async deleteById(id) {
+        return await this.query().deleteById(id);
     }
 }
-
-async function findById(id) {
-    try {
-        let [ClientData] = await db('clients')
-            .select('*')
-            .where({ id: id })      
-            .innerJoin('clients_proposals', 'clients.id', '=', 'clients_proposals.client_id')
-            .innerJoin('proposals', 'proposals.id', '=', 'clients_proposals.proposal_id')
-        return ClientData
-    } catch (error) {
-        console.log(error)
-        throw new Error('ERROR')
-    }
-}
-
-export { Client, findById }
+module.exports = Client;

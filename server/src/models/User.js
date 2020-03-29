@@ -1,4 +1,4 @@
-import db from '../db/db'
+import {knex} from '../db/db'
 
 class User {
     constructor(data) {
@@ -16,7 +16,7 @@ class User {
 
 async function findById(id) {
     try {
-        const [userData] = db('users')
+        const [userData] = knex('users')
             .select('id', 'token', 'username', 'email', 'isAdmin')
             .where({ id: id })
         return userData

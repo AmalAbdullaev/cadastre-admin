@@ -1,4 +1,4 @@
-import db from '../db/db'
+import {knex} from '../db/db'
 import joi from 'joi'
 import rand from 'randexp'
 import bcrypt from 'bcrypt'
@@ -70,7 +70,7 @@ class UserController {
         }
 
         //Now let's check for a duplicate username
-        var [result] = await db('users')
+        var [result] = await knex('users')
             .where({
                 username: request.username,
             })
@@ -80,7 +80,7 @@ class UserController {
         }
 
         //..and duplicate email
-        var [result] = await db('users')
+        var [result] = await knex('users')
             .where({
                 email: request.email,
             })
@@ -105,7 +105,7 @@ class UserController {
 
         //Ok, at this point we can sign them up.
         try {
-            var [result] = await db('users')
+            var [result] = await knex('users')
                 .insert(request)
                 .returning('id')
 
@@ -145,7 +145,7 @@ class UserController {
         }
 
         //Let's find that user
-        var [userData] = await db('users')
+        var [userData] = await knex('users')
             .where({
                 username: request.username,
             })
@@ -186,16 +186,16 @@ class UserController {
             isValid: true,
         }
 
-        //Insert the refresh data into the db
+        //Insert the refresh data into the knex
         try {
-            await db('refresh_tokens').insert(refreshTokenData)
+            await knex('refresh_tokens').insert(refreshTokenData)
         } catch (error) {
             ctx.throw(400, 'INVALID_DATA')
         }
 
         //Update their login count
         try {
-            await db('users')
+            await knex('users')
                 .increment('loginCount')
                 .where({ id: userData.id })
         } catch (error) {
@@ -221,7 +221,7 @@ class UserController {
         }
 
         //Let's find that user and refreshToken in the refreshToken table
-        const [refreshTokenDatabaseData] = await db('refresh_tokens')
+        const [refreshTokenDatabaseData] = await knex('refresh_tokens')
             .select('username', 'refreshToken', 'expiration')
             .where({
                 username: request.username,
@@ -243,7 +243,7 @@ class UserController {
 
         //Ok, everthing checked out. So let's invalidate the refresh token they just confirmed, and get them hooked up with a new one.
         try {
-            await db('refresh_tokens')
+            await knex('refresh_tokens')
                 .update({
                     isValid: false,
                     updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
@@ -253,7 +253,7 @@ class UserController {
             ctx.throw(400, 'INVALID_DATA1')
         }
 
-        const [userData] = await db('users')
+        const [userData] = await knex('users')
             .select('id', 'token', 'username', 'email', 'isAdmin')
             .where({ username: request.username })
         if (!userData) {
@@ -275,9 +275,9 @@ class UserController {
             isValid: true,
         }
 
-        //Insert the refresh data into the db
+        //Insert the refresh data into the knex
         try {
-            await db('refresh_tokens').insert(refreshTokenData)
+            await knex('refresh_tokens').insert(refreshTokenData)
         } catch (error) {
             ctx.throw(400, 'INVALID_DATA')
         }
@@ -297,7 +297,7 @@ class UserController {
     async invalidateAllRefreshTokens(ctx) {
         const request = ctx.request.body
         try {
-            await db('refresh_tokens')
+            await knex('refresh_tokens')
                 .update({
                     isValid: false,
                     updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
@@ -315,7 +315,7 @@ class UserController {
             ctx.throw(404, 'INVALID_DATA')
         }
         try {
-            await db('refresh_tokens')
+            await knex('refresh_tokens')
                 .update({
                     isValid: false,
                     updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
@@ -343,7 +343,7 @@ class UserController {
         }
 
         try {
-            var result = await db('users')
+            var result = await knex('users')
                 .update(resetData)
                 .where({ email: request.email })
                 .returning('id')
@@ -393,7 +393,7 @@ class UserController {
             ctx.throw(404, 'INVALID_DATA')
         }
 
-        let [passwordResetData] = await db('users')
+        let [passwordResetData] = await knex('users')
             .select('passwordResetExpiration')
             .where({
                 email: request.email,
@@ -426,7 +426,7 @@ class UserController {
 
         //Ok, let's make sure their token is correct again, just to be sure since it could have
         //been some time between page entrance and form submission
-        let [passwordResetData] = await db('users')
+        let [passwordResetData] = await knex('users')
             .select('passwordResetExpiration')
             .where({
                 email: request.email,
@@ -457,7 +457,7 @@ class UserController {
         request.passwordResetToken = null
         request.passwordResetExpiration = null
         try {
-            await db('users')
+            await knex('users')
                 .update({
                     password: request.password,
                     passwordResetToken: request.passwordResetToken,
@@ -486,7 +486,7 @@ class UserController {
     }
 
     async checkUniqueToken(token) {
-        let result = await db('users')
+        let result = await knex('users')
             .where({
                 token: token,
             })

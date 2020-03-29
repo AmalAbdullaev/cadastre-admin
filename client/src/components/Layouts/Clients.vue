@@ -48,7 +48,6 @@
                   <th>ФИО</th>
                   <th>Телефон</th>
                   <th>Почта</th>
-                  <th>Услуги</th>
                   <th>Статус заявки</th>
                   <th></th>
                 </tr>
@@ -64,9 +63,6 @@
                   </td>
                   <td>
                     {{ client.email }}
-                  </td>
-                  <td>
-                    <!-- <span v-for="proposal in client.proposals"></span> -->
                   </td>
                   <th>
                     <a

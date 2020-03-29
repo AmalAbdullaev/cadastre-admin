@@ -1,8 +1,7 @@
 import joi from 'joi'
 import sgMail from '@sendgrid/mail'
 import dateFormat from 'date-fns/format'
-import { Client } from '../models/Client'
-import { ClientProposal } from '../models/ClientProposal'
+import  Client from '../models/Client'
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const clientSchema = joi.object({
@@ -24,28 +23,23 @@ const clientSchema = joi.object({
     status: joi
         .string()
         .required()
-        .valid('NEW', 'IN_PROGRESS', 'DONE')
+        .valid('NEW', 'IN_PROGRESS', 'DONE'),
+    proposals: joi
+        .array()
+        .required()
 })
-
 
 class ClientController {
     async index(ctx) {
         const query = ctx.query
-
-        //Init a new client object
-        const client = new Client()
-
-        //Let's check that the sort options were set. Sort can be empty
         if (!query.page || !query.limit) {
             ctx.throw(400, 'INVALID_ROUTE_OPTIONS')
         }
 
-        //Get paginated clients of clients
         try {
-            let result = await client.all(query)
-            console.log(result);
-            ctx.body = result.data;
-            ctx.set('Total', result.count);
+            const data = await Client.all(query)
+            ctx.body = data.results;
+            ctx.set('Total', data.total);
         } catch (error) {
             console.log(error)
             ctx.throw(400, 'INVALID_DATA' + error)
@@ -55,14 +49,8 @@ class ClientController {
     async show(ctx) {
         const params = ctx.params
         if (!params.id) ctx.throw(400, 'INVALID_DATA')
-
-        //Initialize client
-        const client = new Client()
-
         try {
-            //Find and show client
-            await client.find(params.id)
-            ctx.body = client
+            ctx.body = await Client.findOne(params.id)
         } catch (error) {
             console.log(error)
             ctx.throw(400, 'INVALID_DATA')
@@ -70,21 +58,14 @@ class ClientController {
     }
 
     async create(ctx) {
-        const request = ctx.request.body
-
-        //Attach logged in user
-        const client = new Client(request)
+        const client = ctx.request.body
         client.status = 'NEW';
-
-        //Validate the newly created client
         const validator = joi.validate(client, clientSchema)
         if (validator.error) ctx.throw(400, validator.error.details[0].message)
 
         try {
-            let result = await client.store()
-            ctx.body = { message: 'SUCCESS', id: result[0] }
-            const clientProposal = new ClientProposal({ clientId: result[0], proposals: request.proposals });
-            await clientProposal.save();
+            const data = await Client.store(client)
+            ctx.body = { message: 'SUCCESS', id: data.id }
         } catch (error) {
             console.log(error)
             ctx.throw(400, 'INVALID_DATA')
@@ -93,33 +74,14 @@ class ClientController {
 
     async update(ctx) {
         const params = ctx.params
-        const request = ctx.request.body
+        const client = ctx.request.body
 
-        //Make sure they've specified a client
         if (!params.id) ctx.throw(400, 'INVALID_DATA')
-
-        //Find and set that client
-        const client = new Client()
-        await client.find(params.id)
-        if (!client) ctx.throw(400, 'INVALID_DATA')
-
-
-        //Add the updated date value
         client.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
-
-        //Replace the client data with the new updated client data
-        Object.keys(ctx.request.body).forEach(function(parameter, index) {
-            if(client.hasOwnProperty(parameter))
-                client[parameter] = request[parameter]
-        })
-
+        client.id = params.id
         try {
-            console.log(client);
-            await client.save()
-            ctx.body = { message: 'SUCCESS'}
-            console.log('RESULT', request.proposals);
-            const clientProposal = new ClientProposal({ clientId: params.id, proposals: request.proposals });
-            await clientProposal.save();
+            const data = await Client.update(client)
+            ctx.body = { message: 'SUCCESS', data: data }
         } catch (error) {
             console.log(error)
             ctx.throw(400, 'INVALID_DATA')
@@ -130,14 +92,9 @@ class ClientController {
         const params = ctx.params
         if (!params.id) ctx.throw(400, 'INVALID_DATA')
 
-        //Find that client
-        const client = new Client()
-        await client.find(params.id)
-        if (!client) ctx.throw(400, 'INVALID_DATA')
-
         try {
-            await client.destroy()
-            ctx.body = { message: 'SUCCESS' }
+            const data = await Client.deleteById(params.id);
+            ctx.body = { message: 'SUCCESS', data: data }
         } catch (error) {
             console.log(error)
             ctx.throw(400, 'INVALID_DATA')
