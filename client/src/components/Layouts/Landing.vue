@@ -163,19 +163,46 @@
       <h3>Оставьте заявку и мы с вами обязательно свяжемся</h3>
 
       <!-- FORM -->
-      <form class="landing__form-wrapper" action="">
-        <input type="text" name="uName" placeholder="Ваше имя" id="" />
+      <form class="landing__form-wrapper">
+        <div
+          v-if="showAlert"
+          v-for="error in errors"
+          :key="error"
+          class="alert alert-danger"
+          role="alert"
+        >
+          {{ error }}
+        </div>
+        <input
+          type="text"
+          v-model="client.fullName"
+          name="fullName"
+          placeholder="Ваше имя"
+          id=""
+          required
+        />
         <input
           type="number"
-          name="uPhone"
-          placeholder="Номер телефона (без +)"
-          id=""
+          name="phone"
+          v-model="client.phone"
+          :minlength="8"
+          placeholder="Номер телефона"
+          id="phone"
+          required
         />
-        <input type="text" name="uMail" placeholder="Email" id="" />
+        <input
+          type="text"
+          v-model="client.email"
+          name="email"
+          placeholder="Email"
+          id="email"
+          required
+        />
         <button
-          type="submit"
+          type="button"
           class="landing__btn landing__btn-form"
           style="vertical-align:middle"
+          v-on:click="save"
         >
           <span>Оставить заявку </span>
         </button>
@@ -201,6 +228,58 @@
 <script>
 export default {
   name: "landing",
+  data() {
+    return {
+      client: {
+        fullName: "",
+        phone: "+",
+        email: "",
+        proposals: []
+      },
+      errors: [],
+      showAlert: false
+    };
+  },
+  methods: {
+    save(e) {
+      e.preventDefault();
+      if (
+        this.client.fullName &&
+        this.client.phone.length > 8 &&
+        this.client.email &&
+        this.validEmail(this.client.email)
+      ) {
+        this.$store.dispatch("client/saveClientForm", this.client).then(() => {
+          this.client = {
+            fullName: "",
+            phone: "",
+            email: "",
+            proposals: []
+          };
+        });
+      } else {
+        this.errors = [];
+        this.errors.push("Заполните форму");
+      }
+    },
+    validEmail: function(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    }
+  },
+  watch: {
+    errors(newValue) {
+      this.showAlert = true;
+      if (newValue.length) {
+        setTimeout(
+          function() {
+            this.showAlert = false;
+          }.bind(this),
+          3000
+        );
+      }
+    }
+  },
   mounted() {}
 };
 </script>

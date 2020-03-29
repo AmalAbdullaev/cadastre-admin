@@ -166,7 +166,7 @@ export default {
       clients: state => state.client.clients
     }),
     pageCount() {
-      return this.$store.state.client.total / this.query.limit;
+      return Math.ceil(this.$store.state.client.total / this.query.limit);
     }
   },
   methods: {

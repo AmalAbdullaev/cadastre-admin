@@ -66,7 +66,7 @@ const router = new Router({
       meta: { title: "Reset" }
     },
     {
-      path: "/layout/landing",
+      path: "/landing",
       component: Landing,
       name: "landing",
       meta: { title: "Landing" }

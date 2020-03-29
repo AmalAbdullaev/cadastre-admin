@@ -26,7 +26,6 @@ const clientSchema = joi.object({
         .valid('NEW', 'IN_PROGRESS', 'DONE'),
     proposals: joi
         .array()
-        .required()
 })
 
 class ClientController {

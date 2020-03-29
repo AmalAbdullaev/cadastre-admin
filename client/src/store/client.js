@@ -8,12 +8,14 @@ import { setAuthorizationHeader } from "@/common/utilities";
 const SET_CLIENTS = "SET_CLIENTS";
 const SET_CLIENT = "SET_CLIENT";
 const SET_TOTAL = "SET_TOTAL";
+const SET_FORM_CLIENT = "SET_FORM_CLIENT";
 
 const client = {
   namespaced: true,
   state: {
     clients: [],
     client: {},
+    formClient: {},
     total: 0
   },
   mutations: {
@@ -25,6 +27,9 @@ const client = {
     },
     SET_CLIENT(state, data) {
       state.client = data;
+    },
+    SET_FORM_CLIENT(state, data) {
+      state.formClient = data;
     }
   },
   actions: {
@@ -48,6 +53,19 @@ const client = {
       setAuthorizationHeader(rootGetters["user/accessToken"]);
       try {
         return await axios.post(api.client.fetchClients(), data.client);
+      } catch (error) {
+        return Promise.reject(error.response ? error.response : error);
+      }
+    },
+    async saveClientForm({ commit }, data) {
+      try {
+        console.log(data);
+        return await axios
+          .post(api.client.fetchClientsForm(), data)
+          .then(response => {
+            console.log(response);
+            commit(SET_FORM_CLIENT, response);
+          });
       } catch (error) {
         return Promise.reject(error.response ? error.response : error);
       }
