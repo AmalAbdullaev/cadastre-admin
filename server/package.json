@@ -5,6 +5,7 @@
   "author": "John Datserakis",
   "private": true,
   "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon app.js --exec",
     "watch": "cross-env NODE_ENV=development nodemon app.js --exec",
     "test": "cross-env NODE_ENV=testing jest --forceExit",
     "build": "cross-env NODE_ENV=production babel src -d build && npm run pretty",

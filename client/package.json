@@ -8,7 +8,8 @@
     "build": "npm run test && vue-cli-service build",
     "test": "vue-cli-service test:unit --verbose",
     "lint": "vue-cli-service lint",
-    "watch": "vue-cli-service serve --open"
+    "watch": "vue-cli-service serve --open",
+    "start": "vue-cli-service serve --open"
   },
   "dependencies": {
     "axios": "^0.18.0",

@@ -188,3 +188,33 @@
 >>>>>>> master
 [Sun Mar 29 17:41:06.302381 2020] [mpm_event:notice] [pid 1:tid 140476603366728] AH00489: Apache/2.4.41 (Unix) configured -- resuming normal operations
 [Sun Mar 29 17:41:06.306413 2020] [core:notice] [pid 1:tid 140476603366728] AH00094: Command line: 'httpd -D FOREGROUND'
+[Sun Mar 29 18:02:26.217745 2020] [proxy_fcgi:error] [pid 8:tid 140476599446304] [client 172.26.0.1:59086] AH01071: Got error 'Primary script unknown\n'
+[Sun Mar 29 19:02:26.259147 2020] [proxy_fcgi:error] [pid 8:tid 140476598586144] [client 172.26.0.1:59096] AH01071: Got error 'Primary script unknown\n'
+[Sun Mar 29 20:02:58.763128 2020] [proxy_fcgi:error] [pid 8:tid 140476597869344] [client 172.26.0.1:59104] AH01071: Got error 'Primary script unknown\n'
+[Sun Mar 29 21:02:58.819361 2020] [proxy_fcgi:error] [pid 8:tid 140476597582624] [client 172.26.0.1:59112] AH01071: Got error 'Primary script unknown\n'
+[Mon Mar 30 15:49:58.656660 2020] [proxy_fcgi:error] [pid 8:tid 140476596722464] [client 172.26.0.1:59128] AH01071: Got error 'Primary script unknown\n'
+[Mon Mar 30 16:49:58.743359 2020] [proxy_fcgi:error] [pid 10:tid 140476598872864] [client 172.26.0.1:59134] AH01071: Got error 'Primary script unknown\n'
+[Mon Mar 30 17:50:31.407982 2020] [proxy_fcgi:error] [pid 8:tid 140476599733024] [client 172.26.0.1:59142] AH01071: Got error 'Primary script unknown\n'
+[Mon Mar 30 18:50:31.467961 2020] [proxy_fcgi:error] [pid 10:tid 140476598442784] [client 172.26.0.1:59150] AH01071: Got error 'Primary script unknown\n'
+[Mon Mar 30 19:51:04.291043 2020] [proxy_fcgi:error] [pid 92:tid 140476599876384] [client 172.26.0.1:59158] AH01071: Got error 'Primary script unknown\n'
+[Mon Mar 30 20:51:04.311363 2020] [proxy_fcgi:error] [pid 92:tid 140476599016224] [client 172.26.0.1:59166] AH01071: Got error 'Primary script unknown\n'
+[Tue Mar 31 12:24:50.941630 2020] [proxy_fcgi:error] [pid 92:tid 140476598012704] [client 172.26.0.1:59186] AH01071: Got error 'Primary script unknown\n'
+[Tue Mar 31 13:25:24.795583 2020] [proxy_fcgi:error] [pid 92:tid 140476597295904] [client 172.26.0.1:59194] AH01071: Got error 'Primary script unknown\n'
+[Tue Mar 31 14:25:24.884069 2020] [proxy_fcgi:error] [pid 92:tid 140476597009184] [client 172.26.0.1:59202] AH01071: Got error 'Primary script unknown\n'
+[Tue Mar 31 15:25:55.610293 2020] [proxy_fcgi:error] [pid 92:tid 140476600019744] [client 172.26.0.1:59210] AH01071: Got error 'Primary script unknown\n'
+[Wed Apr 01 16:01:45.614271 2020] [proxy_fcgi:error] [pid 92:tid 140476597582624] [client 172.26.0.1:59244] AH01071: Got error 'Primary script unknown\n'
+[Wed Apr 01 17:01:45.739677 2020] [proxy_fcgi:error] [pid 92:tid 140476597439264] [client 172.26.0.1:59252] AH01071: Got error 'Primary script unknown\n'
+[Wed Apr 01 18:01:45.839650 2020] [proxy_fcgi:error] [pid 8:tid 140476598156064] [client 172.26.0.1:59260] AH01071: Got error 'Primary script unknown\n'
+[Wed Apr 01 20:01:48.964597 2020] [proxy_fcgi:error] [pid 92:tid 140476600163104] [client 172.26.0.1:59272] AH01071: Got error 'Primary script unknown\n'
+[Thu Apr 02 10:46:34.723327 2020] [proxy_fcgi:error] [pid 92:tid 140476599876384] [client 172.26.0.1:59318] AH01071: Got error 'Primary script unknown\n'
+[Thu Apr 02 11:46:34.779278 2020] [proxy_fcgi:error] [pid 92:tid 140476599733024] [client 172.26.0.1:59322] AH01071: Got error 'Primary script unknown\n'
+[Thu Apr 02 12:47:06.365268 2020] [proxy_fcgi:error] [pid 8:tid 140476598012704] [client 172.26.0.1:59330] AH01071: Got error 'Primary script unknown\n'
+[Thu Apr 02 13:47:06.442486 2020] [proxy_fcgi:error] [pid 92:tid 140476598442784] [client 172.26.0.1:59338] AH01071: Got error 'Primary script unknown\n'
+[Thu Apr 02 14:47:39.202584 2020] [proxy_fcgi:error] [pid 92:tid 140476597869344] [client 172.26.0.1:59346] AH01071: Got error 'Primary script unknown\n'
+[Thu Apr 02 15:47:39.258290 2020] [proxy_fcgi:error] [pid 92:tid 140476597009184] [client 172.26.0.1:59354] AH01071: Got error 'Primary script unknown\n'
+[Thu Apr 02 16:47:39.674102 2020] [proxy_fcgi:error] [pid 92:tid 140476599733024] [client 172.26.0.1:59362] AH01071: Got error 'Primary script unknown\n'
+[Mon May 25 20:14:09.874923 2020] [mpm_event:notice] [pid 1:tid 140361809431880] AH00489: Apache/2.4.41 (Unix) configured -- resuming normal operations
+[Mon May 25 20:14:09.900077 2020] [core:notice] [pid 1:tid 140361809431880] AH00094: Command line: 'httpd -D FOREGROUND'
+[Thu May 28 11:35:34.085952 2020] [mpm_event:notice] [pid 1:tid 140361809431880] AH00491: caught SIGTERM, shutting down
+[Fri Sep 25 12:34:39.252500 2020] [mpm_event:notice] [pid 1:tid 140249297861960] AH00489: Apache/2.4.46 (Unix) configured -- resuming normal operations
+[Fri Sep 25 12:34:39.258034 2020] [core:notice] [pid 1:tid 140249297861960] AH00094: Command line: 'httpd -D FOREGROUND'

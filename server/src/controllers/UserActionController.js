@@ -36,7 +36,7 @@ const userSchemaSignup = joi.object({
         .required(),
     password: joi
         .string()
-        .min(8)
+        .min(1)
         .max(35)
         .required(),
 })
@@ -48,7 +48,7 @@ const userSchemaResetPassword = joi.object({
         .required(),
     password: joi
         .string()
-        .min(8)
+        .min(1)
         .max(35)
         .required(),
     passwordResetToken: joi.string().required(),
